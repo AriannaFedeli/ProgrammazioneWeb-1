@@ -82,6 +82,31 @@ exports.addStudent = function(req,res,next) {
 
 var jwt= require('jwt-simple');
 
+var createHash = function (password) {
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+}
+
+exports.showStudentData = function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        var decoded = jwt.decode(token, process.env.SECRET);
+
+        /** Ricerca di tutti i corsi disponibili */
+
+        Student.findOne({}, function (err, student.name) {
+            if (err) {
+                console.log('Errore nella ricerca dei dati studente ');
+                return res.json({ msg: '' + err })
+            }
+            else
+              return res.json({ student })
+         })
+
+    } else {
+        return res.json({ msg: 'token non valido' })
+    }
+}
+
 exports.loginStudent = function(req,res) {
     User.findOne({
         username: req.body.username
